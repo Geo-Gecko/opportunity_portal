@@ -7,13 +7,14 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
 
-  <link rel="manifest" href="site.webmanifest">
+  <!-- <link rel="manifest" href="site.webmanifest"> -->
   <link rel="apple-touch-icon" href="icon.png">
   <!-- Place favicon.ico in the root directory -->
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/leaflet.css">
   <meta name="theme-color" content="#fafafa">
 
   
@@ -29,8 +30,6 @@
     <a class="navbar-brand" href="https://opportunity.org/join-a-community/insight-trips/brochures/2019/uganda-2019">
     <img src="img/logo3_4.png">
     </a>
-
-    <button type="button" class="btn btn-primary"  style="margin-left: 1200px;" id="btnPink">About</button>
  
   </nav>
 <!--sidebar codes here--> 
@@ -41,8 +40,8 @@
     <div class="mt-2 col-md-12 " style="border-radius: 2rem;" id="card1">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+          <h5 class="card-title">Tobacco Growing Areas</h5>
+          <div id="map" style="height:500px; z-index: 1;"></div>
         </div>
       </div>
     </div>
@@ -93,6 +92,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 <script src="js/vendor/modernizr-3.8.0.min.js"></script>
+<script src="js/vendor/leaflet.js"></script>
+<script src="js/vendor/leaflet-tilelayer-colorfilter.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
 
   <script src="js/plugins.js"></script>
