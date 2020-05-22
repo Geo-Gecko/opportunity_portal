@@ -17,38 +17,13 @@ L.tileLayer.colorFilter('https://server.arcgisonline.com/ArcGIS/rest/services/Wo
 }).addTo(map);
 
 
-// L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-//     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-// }).addTo(map);
-
-map.on('moveend', function() {
-    console.log(map.getBounds())
-});
 
 map.createPane('classification_2019_2020');
 map.getPane('classification_2019_2020').style.zIndex = 850;
-var classification_2019_2020 = L.tileLayer.wms('http://localhost:8080/geoserver/wms?', {
-    layers: 'opportunity:27_sunday_classn_for_2019_2020',
-    styles: '',
+L.tileLayer.wms('http://geogecko.gis-cdn.net/geoserver/gg/wms?', {
+    layers: 'gg:gg_data',
+    dim_location: '2019_2020_opportunity_classification.tiff',
     transparent: true,
     format: 'image/png',
     pane: 'classification_2019_2020'
 }).addTo(map)
-
-// L.tileLayer.wms('https://geogecko.gis-cdn.net/geoserver/wms?', {
-//     layers: 'gg:27_sunday_classn_for_2019_2020',
-//     styles: '',
-//     transparent: true,
-//     format: 'image/png',
-//     pane: 'classification_2019_2020'
-// }).addTo(map)
-
-// console.log(classification_2019_2020)
-
-// import rasterio
-// with rasterio.open('28_monday_classn_for_2019_2018.tiff') as infile:
-//     profile=infile.profile
-//     profile['driver']='PNG'
-//     raster=infile.read()
-//     with rasterio.open('28_monday_classn_for_2019_2018.png', 'w', **profile) as dst:
-//             dst.write(raster)
