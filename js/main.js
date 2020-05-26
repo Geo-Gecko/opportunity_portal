@@ -7,7 +7,6 @@ bounds = L.latLngBounds(southWest, northEast);
 let map = L.map('map', {
     maxBounds: bounds,
     minZoom: 9,
-    maxZoom: 9
   }).setView([-14, 33.4], 9);
 // map.fitBounds(bounds)
 
@@ -27,3 +26,16 @@ L.tileLayer.wms('http://geogecko.gis-cdn.net/geoserver/gg/wms?', {
     format: 'image/png',
     pane: 'classification_2019_2020'
 }).addTo(map)
+
+let legend = L.control({ position: 'bottomright' });
+
+
+legend.onAdd = function () {
+
+    let div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML += '<i style="background:#6ee16e"></i>Tobacco<br>';
+
+    return div;
+  };
+
+legend.addTo(map);
