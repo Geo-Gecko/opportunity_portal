@@ -63,7 +63,7 @@ maps.forEach(map_ => {
                 let number_ = parish.feature.properties[category_]
                 number_ = number_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 popup_info.push(
-                    `<br><strong>${category_}:</strong>${number_}`
+                    `<br><strong>${category_}:</strong>${number_} sqkm`
                 )
             })
             parish.bindPopup(
@@ -79,9 +79,23 @@ maps.forEach(map_ => {
             });
         });
 
+        function getParishColor(d) {
+            return d > 250000 ? '#016c59' :
+                d > 150000 ? '#016c59' :
+                d > 120000 ? '#1c9099' :
+                d > 100000 ? '#1c9099' :
+                d > 85000 ? '#67a9cf' :
+                d > 65000 ? '#67a9cf' :
+                d > 50000 ? '#bdc9e1' :
+                d > 30000 ? '#bdc9e1' :
+                d > 15000 ? '#f6eff7' :
+                d > 5000 ? '#f6eff7' :
+                d > 1000 ? '#808080' :
+                '#808080';
+        }
         function style_fn(feature) {
             return {
-                fillColor: '#fecc5c',
+                fillColor: getParishColor(feature.properties.Tobacco),
                 weight: 1,
                 opacity: 0.5,
                 color: 'black',
@@ -89,6 +103,7 @@ maps.forEach(map_ => {
                 fillOpacity: 1
             };
         }
+        addLegend([250000, 150000, 50000, 1000], getParishColor, name)
     }
 
 })

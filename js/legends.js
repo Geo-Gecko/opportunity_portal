@@ -14,9 +14,9 @@ function thousep2(n) {
   }
 }
 
-var legend = L.control({ position: 'bottomright' });
 
 function addLegend(grades, ramp, map) {
+  let legend = L.control({ position: 'bottomright' });
 
   legend.onAdd = function () {
 
