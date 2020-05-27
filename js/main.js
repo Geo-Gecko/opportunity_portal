@@ -23,56 +23,62 @@ maps.forEach(map_ => {
     }).addTo(name);
 
     if (map_ === "map1") {
-        name.createPane('classification_2019_2020');
-        name.getPane('classification_2019_2020').style.zIndex = 850;
-        L.tileLayer.wms('http://geogecko.gis-cdn.net/geoserver/gg/wms?', {
-            layers: 'gg:gg_data',
-            dim_location: '2019_2020_opportunity_classification.tiff',
-            transparent: true,
-            format: 'image/png',
-            pane: 'classification_2019_2020'
-        }).addTo(name)
 
-        let legend = L.control({ position: 'bottomright' });
+        L.geoJson(grids_data_2, {
+            style: styletobacco
+        }).addTo(name);
+        function getColor(d) {
+            return d > 250000 ? '#016c59' :
+                d > 150000 ? '#016c59' :
+                d > 50000 ? '#1c9099' :
+                d > 20000 ? '#1c9099' :
+                d > 10000 ? '#67a9cf' :
+                d > 5000 ? '#67a9cf' :
+                d > 1000 ? '#bdc9e1' :
+                d > 0 ? '#808080' :
+                '#808080';
+        }
 
+        function styletobacco(feature) {
+            return {
+                fillColor: getColor(feature.properties.Tobacco),
+                weight: 1,
+                opacity: 1,
+                color: 'black',
+                dashArray: '0',
+                fillOpacity: 1
+            };
+        }
+        addLegend([250000, 150000, 50000, 1000], getColor, name)
 
-        legend.onAdd = function () {
-
-            let div = L.DomUtil.create('div', 'info legend');
-            div.innerHTML += '<i style="background:#6ee16e"></i>Tobacco<br>';
-
-            return div;
-        };
-
-        legend.addTo(name);
     } else {
         let parishes_data = L.geoJson(parish_data, {
-          style: style_fn
+            style: style_fn
         }).addTo(name);
-      
-        parishes_data.eachLayer(function(parish) {
-          let parish_ = parish.feature.properties.Name;
-          let popup_info = []
-          categories_.forEach(category_ => {
-            let number_ = parish.feature.properties[category_]
-            number_ = number_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            popup_info.push(
-              `<br><strong>${category_}:</strong>${number_}`
-            )
-          })
-          parish.bindPopup(
-            `<strong>Parish:</strong>${parish_ + popup_info.join("")}`, {
-              autoPan: false
+
+        parishes_data.eachLayer(function (parish) {
+            let parish_ = parish.feature.properties.Name;
+            let popup_info = []
+            categories_.forEach(category_ => {
+                let number_ = parish.feature.properties[category_]
+                number_ = number_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                popup_info.push(
+                    `<br><strong>${category_}:</strong>${number_}`
+                )
+            })
+            parish.bindPopup(
+                `<strong>Parish:</strong>${parish_ + popup_info.join("")}`, {
+                autoPan: false
             }
-          );
-          parish.on('mouseover', function(e) {
-            this.openPopup();
-          });
-          parish.on('mouseout', function(e) {
-            this.closePopup();
-          });
+            );
+            parish.on('mouseover', function (e) {
+                this.openPopup();
+            });
+            parish.on('mouseout', function (e) {
+                this.closePopup();
+            });
         });
-      
+
         function style_fn(feature) {
             return {
                 fillColor: '#fecc5c',
