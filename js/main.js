@@ -3,7 +3,7 @@ let southWest = L.latLng(-14.639396280953353, 31.731262207031254),
     northEast = L.latLng(-13.306775722376086, 35.06835937500001),
     bounds = L.latLngBounds(southWest, northEast);
 
-let categories = [
+let categories_ = [
     "Tobacco", "Soybean", "Maize" /*"Bareland"*/
     // "Forest", "Other vegetation", 
 ]
@@ -53,7 +53,7 @@ maps.forEach(map_ => {
         parishes_data.eachLayer(function(parish) {
           let parish_ = parish.feature.properties.Name;
           let popup_info = []
-          categories.forEach(category_ => {
+          categories_.forEach(category_ => {
             let number_ = parish.feature.properties[category_]
             number_ = number_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             popup_info.push(
@@ -86,3 +86,34 @@ maps.forEach(map_ => {
     }
 
 })
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    let data_ = []
+    parish_data.features.forEach(feature => {
+        let parish_crops = {}
+        parish_crops["name"] = feature.properties.Name
+        parish_crops["data"] = [feature.properties["Tobacco"]]
+        data_.push(parish_crops)
+    })
+
+    Highcharts.chart('chart_id', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: null
+        },
+        xAxis: {
+            title: {
+                text: 'Tobacco'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Crops Grown'
+            }
+        },
+        series: data_
+    });
+});
