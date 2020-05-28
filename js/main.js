@@ -9,6 +9,34 @@ let categories_ = [
 ]
 let maps = ["map1", "map2"]
 let map1_, map2_;
+function getColor(d) {
+          return d > 150000 ? '#016c59' :
+              d > 149999 ? '#016c59' :
+              d > 10000 ? '#1c9099' :
+              d > 19999 ? '#1c9099' :
+              d > 5000 ? '#67a9cf' :
+              d > 4999 ? '#67a9cf' :
+              d > 1000 ? '#bdc9e1' :
+              d > 999 ? '#bdc9e1' :
+              d > 1 ? '#f6eff7' :
+              d > -1 ? '#f6eff7' :
+              d > null ? '#808080' :
+              '#808080';
+}
+function getParishColor(d) {
+    return d > 250000 ? '#016c59' :
+        d > 249999 ? '#016c59' :
+        d > 150000 ? '#1c9099' :
+        d > 149999 ? '#1c9099' :
+        d > 50000 ? '#67a9cf' :
+        d > 49999 ? '#67a9cf' :
+        d > 1000 ? '#bdc9e1' :
+        d > 999 ? '#bdc9e1' :
+        d > 1 ? '#f6eff7' :
+        d > -1 ? '#f6eff7' :
+        d > null ? '#808080' :
+        '#808080';
+}
 
 maps.forEach(map_ => {
     let name = window[`${map_}_`]
@@ -23,89 +51,81 @@ maps.forEach(map_ => {
     }).addTo(name);
 
     if (map_ === "map1") {
-
-        L.geoJson(grids_data_2, {
-            style: styletobacco
-        }).addTo(name);
-        function getColor(d) {
-          return d > 150000 ? '#016c59' :
-              d > 149999 ? '#016c59' :
-              d > 10000 ? '#1c9099' :
-              d > 19999 ? '#1c9099' :
-              d > 5000 ? '#67a9cf' :
-              d > 4999 ? '#67a9cf' :
-              d > 1000 ? '#bdc9e1' :
-              d > 999 ? '#bdc9e1' :
-              d > 1 ? '#f6eff7' :
-              d > -1 ? '#f6eff7' :
-              d > null ? '#808080' :
-              '#808080';
+        let year_data = {
+            "2020-2019": "parish_grid_data_2020_2019",
+            "2019-2020": "parish_grid_data_2019_2018"
         }
+        let baseMaps = {}
 
-        function styletobacco(feature) {
-            return {
-                fillColor: getColor(feature.properties.Tobacco),
-                weight: 1,
-                opacity: 1,
-                color: 'black',
-                dashArray: '0',
-                fillOpacity: 1
-            };
-        }
+        Object.keys(year_data).forEach(key_ => {
+            let tile_ = L.geoJson(eval(year_data[key_]), {
+                style: styletobacco
+            });
+
+            function styletobacco(feature) {
+                return {
+                    fillColor: getColor(feature.properties.Tobacco),
+                    weight: 1,
+                    opacity: 1,
+                    color: 'black',
+                    dashArray: '0',
+                    fillOpacity: 1
+                };
+            }
+            baseMaps[key_] = tile_
+        })
+        baseMaps["2020-2019"].addTo(name)
+        L.control.layers(baseMaps, {}, {collapsed: false}).addTo(name);
         addLegend([150000, 10000, 5000, 1000, 1], getColor, name)
 
     } else {
-        let parishes_data = L.geoJson(parish_data, {
-            style: style_fn
-        }).addTo(name);
+        let year_data = {
+            "2020-2019": "parish_data_2020_2019",
+            "2019-2020": "parish_data_2019_2018"
+        }
+        let baseMaps = {}
+        Object.keys(year_data).forEach(key_ => {
+            let parishes_data = L.geoJson(eval(year_data[key_]), {
+                style: style_fn
+            });
 
-        parishes_data.eachLayer(function (parish) {
-            let parish_ = parish.feature.properties.Name;
-            let popup_info = []
-            categories_.forEach(category_ => {
-                let number_ = parish.feature.properties[category_]
-                number_ = number_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                popup_info.push(
-                    `<br><strong>${category_}:</strong>${number_} sqkm`
-                )
-            })
-            parish.bindPopup(
-                `<strong>Parish:</strong>${parish_ + popup_info.join("")}`, {
-                autoPan: false
+            parishes_data.eachLayer(function (parish) {
+                let parish_ = parish.feature.properties.Name;
+                let popup_info = []
+                categories_.forEach(category_ => {
+                    let number_ = parish.feature.properties[category_]
+                    number_ = number_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    popup_info.push(
+                        `<br><strong>${category_}:</strong>${number_} sqkm`
+                    )
+                })
+                parish.bindPopup(
+                    `<strong>Parish:</strong>${parish_ + popup_info.join("")}`, {
+                    autoPan: false
+                }
+                );
+                parish.on('mouseover', function (e) {
+                    this.openPopup();
+                });
+                parish.on('mouseout', function (e) {
+                    this.closePopup();
+                });
+            });
+
+            function style_fn(feature) {
+                return {
+                    fillColor: getParishColor(feature.properties.Tobacco),
+                    weight: 1,
+                    opacity: 0.5,
+                    color: 'black',
+                    dashArray: '0',
+                    fillOpacity: 1
+                };
             }
-            );
-            parish.on('mouseover', function (e) {
-                this.openPopup();
-            });
-            parish.on('mouseout', function (e) {
-                this.closePopup();
-            });
-        });
-
-        function getParishColor(d) {
-            return d > 250000 ? '#016c59' :
-                d > 249999 ? '#016c59' :
-                d > 150000 ? '#1c9099' :
-                d > 149999 ? '#1c9099' :
-                d > 50000 ? '#67a9cf' :
-                d > 49999 ? '#67a9cf' :
-                d > 1000 ? '#bdc9e1' :
-                d > 999 ? '#bdc9e1' :
-                d > 1 ? '#f6eff7' :
-                d > -1 ? '#f6eff7' :
-                d > null ? '#808080' :
-                '#808080';
-        }
-        function style_fn(feature) {
-            return {
-                fillColor: getParishColor(feature.properties.Tobacco),
-                weight: 1,
-                opacity: 0.5,
-                color: 'black',
-                dashArray: '0',
-                fillOpacity: 1
-            };
-        }
+            baseMaps[key_] = parishes_data
+        })
+        baseMaps["2020-2019"].addTo(name)
+        L.control.layers(baseMaps, {}, {collapsed: false}).addTo(name);
         addLegend([250000, 150000, 50000, 1000, 1], getParishColor, name)
     }
 
@@ -114,7 +134,7 @@ maps.forEach(map_ => {
 document.addEventListener('DOMContentLoaded', function () {
 
     let data_ = []
-    parish_data.features.forEach(feature => {
+    parish_data_2020_2019.features.forEach(feature => {
         let parish_crops = {}
         parish_crops["name"] = feature.properties.Name
         parish_crops["data"] = [feature.properties["Tobacco"]]
