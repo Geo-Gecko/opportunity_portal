@@ -5,7 +5,7 @@ let southWest = L.latLng(-14.639396280953353, 31.731262207031254),
 
 let categories_ = [
     "Tobacco", "Soybean", "Maize" /*"Bareland"*/
-    // "Forest", "Other vegetation", 
+    // "Forest", "Other vegetation",
 ]
 let maps = ["map1", "map2"]
 let map1_, map2_;
@@ -28,15 +28,18 @@ maps.forEach(map_ => {
             style: styletobacco
         }).addTo(name);
         function getColor(d) {
-            return d > 250000 ? '#016c59' :
-                d > 150000 ? '#016c59' :
-                d > 50000 ? '#1c9099' :
-                d > 20000 ? '#1c9099' :
-                d > 10000 ? '#67a9cf' :
-                d > 5000 ? '#67a9cf' :
-                d > 1000 ? '#bdc9e1' :
-                d > 0 ? '#808080' :
-                '#808080';
+          return d > 150000 ? '#016c59' :
+              d > 149999 ? '#016c59' :
+              d > 10000 ? '#1c9099' :
+              d > 19999 ? '#1c9099' :
+              d > 5000 ? '#67a9cf' :
+              d > 4999 ? '#67a9cf' :
+              d > 1000 ? '#bdc9e1' :
+              d > 999 ? '#bdc9e1' :
+              d > 1 ? '#f6eff7' :
+              d > -1 ? '#f6eff7' :
+              d > null ? '#808080' :
+              '#808080';
         }
 
         function styletobacco(feature) {
@@ -49,7 +52,7 @@ maps.forEach(map_ => {
                 fillOpacity: 1
             };
         }
-        addLegend([250000, 150000, 50000, 1000], getColor, name)
+        addLegend([150000, 10000, 5000, 1000, 1], getColor, name)
 
     } else {
         let parishes_data = L.geoJson(parish_data, {
@@ -81,16 +84,16 @@ maps.forEach(map_ => {
 
         function getParishColor(d) {
             return d > 250000 ? '#016c59' :
-                d > 150000 ? '#016c59' :
-                d > 120000 ? '#1c9099' :
-                d > 100000 ? '#1c9099' :
-                d > 85000 ? '#67a9cf' :
-                d > 65000 ? '#67a9cf' :
-                d > 50000 ? '#bdc9e1' :
-                d > 30000 ? '#bdc9e1' :
-                d > 15000 ? '#f6eff7' :
-                d > 5000 ? '#f6eff7' :
-                d > 1000 ? '#808080' :
+                d > 249999 ? '#016c59' :
+                d > 150000 ? '#1c9099' :
+                d > 149999 ? '#1c9099' :
+                d > 50000 ? '#67a9cf' :
+                d > 49999 ? '#67a9cf' :
+                d > 1000 ? '#bdc9e1' :
+                d > 999 ? '#bdc9e1' :
+                d > 1 ? '#f6eff7' :
+                d > -1 ? '#f6eff7' :
+                d > null ? '#808080' :
                 '#808080';
         }
         function style_fn(feature) {
@@ -103,7 +106,7 @@ maps.forEach(map_ => {
                 fillOpacity: 1
             };
         }
-        addLegend([250000, 150000, 50000, 1000], getParishColor, name)
+        addLegend([250000, 150000, 50000, 1000, 1], getParishColor, name)
     }
 
 })
