@@ -27,7 +27,7 @@ maps.forEach(map_ => {
         let year_data = {
             "2020-2019": {
                 data: "parish_grid_data_2020_2019", colorfn: getColor20202019,
-                legendramp: [150000, 10000, 5000, 1000, 1] 
+                legendramp: [150000, 10000, 5000, 1000, 1]
             },
             "2019-2018": {
                 data: "parish_grid_data_2019_2018", colorfn: getColor20192018,
@@ -74,7 +74,7 @@ maps.forEach(map_ => {
         let year_data = {
             "2020-2019": {
                 data: "parish_data_2020_2019", colorfn: getParishColor20202019,
-                legendramp: [2500000, 150000, 50000, 1000, 1] 
+                legendramp: [2500000, 150000, 50000, 1000, 1]
             },
             "2019-2018": {
                 data: "parish_data_2019_2018", colorfn: getParishColor20192018,
@@ -144,12 +144,18 @@ maps.forEach(map_ => {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    let data_ = []
+    let data2020_ = []
+    let data2020object_ = {}, data2019object_ = {}
     parish_data_2020_2019.features.forEach(feature => {
         let parish_crops = {}
         parish_crops["name"] = feature.properties.Name
         parish_crops["data"] = [feature.properties["Tobacco"]]
-        data_.push(parish_crops)
+        data2020object_[feature.properties.Name] = [feature.properties["Tobacco"]]
+        data2020_.push(parish_crops)
+    })
+    parish_data_2019_2018.features.forEach(feature => {
+        data2019object_[feature.properties.Name] = [feature.properties["Tobacco"]]
+
     })
 
     Highcharts.chart('chart_id', {
@@ -157,7 +163,14 @@ document.addEventListener('DOMContentLoaded', function () {
             type: 'bar'
         },
         title: {
-            text: null
+            text: "Chart Of Tobacco Growing Areas Per Parish for 2020",
+            style: {
+                "color": "#333333", "fontSize": "1.5rem",
+                "fontFamily": '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",\
+                Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol",\
+                "Noto Color Emoji";',
+                "fontWeight": "bold"
+            }
         },
         xAxis: {
             title: {
@@ -169,6 +182,47 @@ document.addEventListener('DOMContentLoaded', function () {
                 text: 'Crops Grown'
             }
         },
-        series: data_
-    });
+        series: data2020_,
+    },
+        function (chart) { // on complete
+
+            chart.renderer.button('2020', 60, 10)
+                .attr({
+                    zIndex: 0
+                })
+                .on('click', function () {
+                    chart.series.forEach(parish_ => {
+                        parish_.setData(data2020object_[parish_.name])
+                    });
+                    chart.setTitle(
+                        {text: "Chart Of Tobacco Growing Areas Per Parish for 2020"}
+                    );
+                })
+                .add();
+
+            chart.renderer.button('2019', 120, 10)
+                .attr({
+                    zIndex: 0
+                })
+                .on('click', function () {
+                    chart.series.forEach(parish_ => {
+                        parish_.setData(data2019object_[parish_.name])
+                    });
+                    chart.setTitle(
+                        {text: "Chart Of Tobacco Growing Areas Per Parish for 2019"}
+                    );
+                })
+                .add();
+
+        });
+        /* getting the z-index of an element
+        window.getZIndex = function (e) {      
+            var z = window.document.defaultView.getComputedStyle(e).getPropertyValue('z-index');
+            if (isNaN(z)) return window.getZIndex(e.parentNode);
+            return z; 
+          };
+        
+        console.log($('tspan:contains(Chart Of Tobacco Growing Areas Per Parish for 2020)')[0])
+        console.log( window.getZIndex($('tspan:contains(Chart Of Tobacco Growing Areas Per Parish for 2020)')[0]))
+        */
 });
