@@ -9,36 +9,9 @@ let categories_ = [
 ]
 let maps = ["map1", "map2"]
 let map1_, map2_;
-function getColor(d) {
-          return d > 150000 ? '#016c59' :
-              d > 149999 ? '#016c59' :
-              d > 10000 ? '#1c9099' :
-              d > 19999 ? '#1c9099' :
-              d > 5000 ? '#67a9cf' :
-              d > 4999 ? '#67a9cf' :
-              d > 1000 ? '#bdc9e1' :
-              d > 999 ? '#bdc9e1' :
-              d > 1 ? '#f6eff7' :
-              d > -1 ? '#f6eff7' :
-              d > null ? '#808080' :
-              '#808080';
-}
-function getParishColor(d) {
-    return d > 250000 ? '#016c59' :
-        d > 249999 ? '#016c59' :
-        d > 150000 ? '#1c9099' :
-        d > 149999 ? '#1c9099' :
-        d > 50000 ? '#67a9cf' :
-        d > 49999 ? '#67a9cf' :
-        d > 1000 ? '#bdc9e1' :
-        d > 999 ? '#bdc9e1' :
-        d > 1 ? '#f6eff7' :
-        d > -1 ? '#f6eff7' :
-        d > null ? '#808080' :
-        '#808080';
-}
 
 maps.forEach(map_ => {
+    let mapLegend;
     let name = window[`${map_}_`]
     name = L.map(map_, {
         maxBounds: bounds,
@@ -52,19 +25,25 @@ maps.forEach(map_ => {
 
     if (map_ === "map1") {
         let year_data = {
-            "2020-2019": "parish_grid_data_2020_2019",
-            "2019-2020": "parish_grid_data_2019_2018"
+            "2020-2019": {
+                data: "parish_grid_data_2020_2019", colorfn: getColor20202019,
+                legendramp: [150000, 10000, 5000, 1000, 1] 
+            },
+            "2019-2018": {
+                data: "parish_grid_data_2019_2018", colorfn: getColor20192018,
+                legendramp: [1000, 700, 300, 100, 1]
+            }
         }
         let baseMaps = {}
 
         Object.keys(year_data).forEach(key_ => {
-            let tile_ = L.geoJson(eval(year_data[key_]), {
+            let tile_ = L.geoJson(eval(year_data[key_]["data"]), {
                 style: styletobacco
             });
 
             function styletobacco(feature) {
                 return {
-                    fillColor: getColor(feature.properties.Tobacco),
+                    fillColor: year_data[key_]["colorfn"](feature.properties.Tobacco),
                     weight: 1,
                     opacity: 1,
                     color: 'black',
@@ -75,17 +54,36 @@ maps.forEach(map_ => {
             baseMaps[key_] = tile_
         })
         baseMaps["2020-2019"].addTo(name)
-        L.control.layers(baseMaps, {}, {collapsed: false}).addTo(name);
-        addLegend([150000, 10000, 5000, 1000, 1], getColor, name)
+        L.control.layers(baseMaps, {}, { collapsed: false }).addTo(name);
+        mapLegend = addLegend(
+            [150000, 10000, 5000, 1000, 1],
+            getColor20202019, name, mapLegend
+        )
+        name.on('baselayerchange', function (eventLayer) {
+            if (mapLegend && mapLegend._map) {
+                name.removeControl(mapLegend);
+            }
+            mapLegend = addLegend(
+                year_data[eventLayer.name]["legendramp"],
+                year_data[eventLayer.name]["colorfn"],
+                name, mapLegend
+            )
+        })
 
     } else {
         let year_data = {
-            "2020-2019": "parish_data_2020_2019",
-            "2019-2020": "parish_data_2019_2018"
+            "2020-2019": {
+                data: "parish_data_2020_2019", colorfn: getParishColor20202019,
+                legendramp: [2500000, 150000, 50000, 1000, 1] 
+            },
+            "2019-2018": {
+                data: "parish_data_2019_2018", colorfn: getParishColor20192018,
+                legendramp: [10000, 5000, 3000, 1000, 1]
+            }
         }
         let baseMaps = {}
         Object.keys(year_data).forEach(key_ => {
-            let parishes_data = L.geoJson(eval(year_data[key_]), {
+            let parishes_data = L.geoJson(eval(year_data[key_]["data"]), {
                 style: style_fn
             });
 
@@ -114,7 +112,7 @@ maps.forEach(map_ => {
 
             function style_fn(feature) {
                 return {
-                    fillColor: getParishColor(feature.properties.Tobacco),
+                    fillColor: year_data[key_]["colorfn"](feature.properties.Tobacco),
                     weight: 1,
                     opacity: 0.5,
                     color: 'black',
@@ -125,8 +123,21 @@ maps.forEach(map_ => {
             baseMaps[key_] = parishes_data
         })
         baseMaps["2020-2019"].addTo(name)
-        L.control.layers(baseMaps, {}, {collapsed: false}).addTo(name);
-        addLegend([250000, 150000, 50000, 1000, 1], getParishColor, name)
+        L.control.layers(baseMaps, {}, { collapsed: false }).addTo(name);
+        mapLegend = addLegend(
+            [250000, 150000, 50000, 1000, 1],
+            getParishColor20202019, name, mapLegend
+        )
+        name.on('baselayerchange', function (eventLayer) {
+            if (mapLegend && mapLegend._map) {
+                name.removeControl(mapLegend);
+            }
+            mapLegend = addLegend(
+                year_data[eventLayer.name]["legendramp"],
+                year_data[eventLayer.name]["colorfn"],
+                name, mapLegend
+            )
+        })
     }
 
 })
