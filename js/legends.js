@@ -15,10 +15,10 @@ function thousep2(n) {
 }
 
 
-function addLegend(grades, ramp, map) {
-  let legend = L.control({ position: 'bottomright' });
+function addLegend(grades, ramp, map, mapLegend) {
+  mapLegend = L.control({ position: 'bottomright' });
 
-  legend.onAdd = function () {
+  mapLegend.onAdd = function () {
 
     var div = L.DomUtil.create('div', 'info legend');
 
@@ -32,6 +32,6 @@ function addLegend(grades, ramp, map) {
     return div;
   };
 
-  legend.addTo(map);
+  return mapLegend.addTo(map);
 
 }
