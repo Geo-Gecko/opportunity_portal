@@ -32,6 +32,10 @@ maps.forEach(map_ => {
             "2019-2018": {
                 data: "parish_grid_data_2019_2018", colorfn: getColor20192018,
                 legendramp: [1000, 700, 300, 100, 1]
+            },
+            "2018-2017": {
+                data: "parish_grid_data_2018_2017", colorfn: getColor20202019,
+                legendramp: [150000, 10000, 5000, 1000, 1]
             }
         }
         let baseMaps = {}
@@ -79,6 +83,10 @@ maps.forEach(map_ => {
             "2019-2018": {
                 data: "parish_data_2019_2018", colorfn: getParishColor20192018,
                 legendramp: [10000, 5000, 3000, 1000, 1]
+            },
+            "2018-2017": {
+                data: "parish_data_2018_2017", colorfn: getParishColor20202019,
+                legendramp: [2500000, 150000, 50000, 1000, 1]
             }
         }
         let baseMaps = {}
@@ -145,7 +153,7 @@ maps.forEach(map_ => {
 document.addEventListener('DOMContentLoaded', function () {
 
     let data2020_ = []
-    let data2020object_ = {}, data2019object_ = {}
+    let data2020object_ = {}, data2019object_ = {}, data2018object_ = {}
     parish_data_2020_2019.features.forEach(feature => {
         let parish_crops = {}
         parish_crops["name"] = feature.properties.Name
@@ -156,6 +164,9 @@ document.addEventListener('DOMContentLoaded', function () {
     parish_data_2019_2018.features.forEach(feature => {
         data2019object_[feature.properties.Name] = [feature.properties["Tobacco"]]
 
+    })
+    parish_data_2018_2017.features.forEach(feature => {
+        data2018object_[feature.properties.Name] = [feature.properties["Tobacco"]]
     })
 
     Highcharts.chart('chart_id', {
@@ -186,43 +197,25 @@ document.addEventListener('DOMContentLoaded', function () {
     },
         function (chart) { // on complete
 
-            chart.renderer.button('2020', 60, 10)
-                .attr({
-                    zIndex: 0
-                })
-                .on('click', function () {
-                    chart.series.forEach(parish_ => {
-                        parish_.setData(data2020object_[parish_.name])
-                    });
-                    chart.setTitle(
-                        {text: "Chart Of Tobacco Growing Areas Per Parish for 2020"}
-                    );
-                })
-                .add();
-
-            chart.renderer.button('2019', 120, 10)
-                .attr({
-                    zIndex: 0
-                })
-                .on('click', function () {
-                    chart.series.forEach(parish_ => {
-                        parish_.setData(data2019object_[parish_.name])
-                    });
-                    chart.setTitle(
-                        {text: "Chart Of Tobacco Growing Areas Per Parish for 2019"}
-                    );
-                })
-                .add();
-
+            let graphs_ = {
+                "2020": data2020object_, "2019": data2019object_,
+                "2018": data2018object_
+            }
+            Object.keys(graphs_).forEach((year_, index) => {
+                let horizontal_space = index === 0 ? index + 60 : (index + 1) * 60
+                chart.renderer.button(year_, horizontal_space, 10)
+                    .attr({
+                        zIndex: 0
+                    })
+                    .on('click', function () {
+                        chart.series.forEach(parish_ => {
+                            parish_.setData(graphs_[year_][parish_.name])
+                        });
+                        chart.setTitle(
+                            { text: `Chart Of Tobacco Growing Areas Per Parish for ${year_}` }
+                        );
+                    })
+                    .add();
+            })
         });
-        /* getting the z-index of an element
-        window.getZIndex = function (e) {      
-            var z = window.document.defaultView.getComputedStyle(e).getPropertyValue('z-index');
-            if (isNaN(z)) return window.getZIndex(e.parentNode);
-            return z; 
-          };
-        
-        console.log($('tspan:contains(Chart Of Tobacco Growing Areas Per Parish for 2020)')[0])
-        console.log( window.getZIndex($('tspan:contains(Chart Of Tobacco Growing Areas Per Parish for 2020)')[0]))
-        */
 });
