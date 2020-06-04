@@ -7,8 +7,8 @@ let categories_ = [
     "Tobacco", "Soybean", "Maize" /*"Bareland"*/
     // "Forest", "Other vegetation",
 ]
-let maps = ["map1", "map2"]
-let map1_, map2_;
+let maps = ["map0", "map1", "map2"]
+let map0_, map1_, map2_;
 
 maps.forEach(map_ => {
     let mapLegend;
@@ -23,7 +23,18 @@ maps.forEach(map_ => {
         filter: ['grayscale:100%'],
     }).addTo(name);
 
-    if (map_ === "map1") {
+    if (map_ === "map0") {
+        L.geoJson(tobacco_fields, {
+            style: "#016c59"
+        }).addTo(name);
+        setTimeout(function () {
+            name.flyTo([-14.27, 33.77], 11, {
+              animate: true,
+              duration: 1.0
+            });
+        }, 1000)
+
+    } else if (map_ === "map1") {
         let year_data = {
             "2020-2019": {
                 data: "parish_grid_data_2020_2019", colorfn: getColor20202019,
@@ -74,7 +85,7 @@ maps.forEach(map_ => {
             )
         })
 
-    } else {
+    } else if (map_ === "map2") {
         let year_data = {
             "2020-2019": {
                 data: "parish_data_2020_2019", colorfn: getParishColor20202019,
