@@ -18,7 +18,7 @@ maps.forEach(map_ => {
         minZoom: 9,
     }).setView([-14, 33.4], 9);
 
-    L.tileLayer.colorFilter('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
         filter: ['grayscale:100%'],
     }).addTo(name);
@@ -169,9 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
         data2018object_ = {"name": 2018, "data": []}
     parish_data_2020_2019.features.forEach(feature => {
         parishes_.push(feature.properties.Name)
-        // let parish_crops = {}
         data2020object_["data"].push(feature.properties.Tobacco)
-        // seriesData_.push(parish_crops)
     })
     parish_data_2019_2018.features.forEach(feature => {
         data2019object_["data"].push(feature.properties.Tobacco)
