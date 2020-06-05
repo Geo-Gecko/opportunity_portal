@@ -163,21 +163,22 @@ maps.forEach(map_ => {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    let data2020_ = []
-    let data2020object_ = {}, data2019object_ = {}, data2018object_ = {}
+    let seriesData_ = [], parishes_ = [],
+        data2020object_ = {"name": 2020, "data": []},
+        data2019object_ = {"name": 2019, "data": []},
+        data2018object_ = {"name": 2018, "data": []}
     parish_data_2020_2019.features.forEach(feature => {
-        let parish_crops = {}
-        parish_crops["name"] = feature.properties.Name
-        parish_crops["data"] = [feature.properties["Tobacco"]]
-        data2020object_[feature.properties.Name] = [feature.properties["Tobacco"]]
-        data2020_.push(parish_crops)
+        parishes_.push(feature.properties.Name)
+        // let parish_crops = {}
+        data2020object_["data"].push(feature.properties.Tobacco)
+        // seriesData_.push(parish_crops)
     })
     parish_data_2019_2018.features.forEach(feature => {
-        data2019object_[feature.properties.Name] = [feature.properties["Tobacco"]]
+        data2019object_["data"].push(feature.properties.Tobacco)
 
     })
     parish_data_2018_2017.features.forEach(feature => {
-        data2018object_[feature.properties.Name] = [feature.properties["Tobacco"]]
+        data2018object_["data"].push(feature.properties.Tobacco)
     })
 
     Highcharts.chart('chart_id', {
@@ -195,38 +196,29 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         xAxis: {
+            categories: parishes_,
             title: {
-                text: 'Tobacco'
+                text: null
             }
         },
         yAxis: {
             title: {
-                text: 'Crops Grown'
+                text: "Tobacco grown(square kilometers)",
+                align: "high"
             }
         },
-        series: data2020_,
-    },
-        function (chart) { // on complete
-
-            let graphs_ = {
-                "2020": data2020object_, "2019": data2019object_,
-                "2018": data2018object_
-            }
-            Object.keys(graphs_).forEach((year_, index) => {
-                let horizontal_space = index === 0 ? index + 60 : (index + 1) * 60
-                chart.renderer.button(year_, horizontal_space, 10)
-                    .attr({
-                        zIndex: 0
-                    })
-                    .on('click', function () {
-                        chart.series.forEach(parish_ => {
-                            parish_.setData(graphs_[year_][parish_.name])
-                        });
-                        chart.setTitle(
-                            { text: `Chart Of Tobacco Growing Areas Per Parish for ${year_}` }
-                        );
-                    })
-                    .add();
-            })
-        });
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'top',
+          x: -40,
+          y: 80,
+          floating: true,
+          borderWidth: 1,
+          backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+          shadow: true
+        },
+        series: [data2020object_, data2019object_, data2018object_],
+    });
 });
