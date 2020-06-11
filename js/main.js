@@ -38,15 +38,15 @@ maps.forEach(map_ => {
         // grid map
         let year_data = {
             "2020": {
-                data: "parish_grid_data_2020_2019", colorfn: getColor20202019,
+                data: parish_grid_data_2020_2019, colorfn: getColor20202019,
                 legendramp: [150000, 10000, 5000, 1000, 1]
             },
             "2019": {
-                data: "parish_grid_data_2019_2018", colorfn: getColor20192018,
+                data: parish_grid_data_2019_2018, colorfn: getColor20192018,
                 legendramp: [1000, 700, 300, 100, 1]
             },
             "2018": {
-                data: "parish_grid_data_2018_2017", colorfn: getColor20202019,
+                data: parish_grid_data_2018_2017, colorfn: getColor20202019,
                 legendramp: [150000, 10000, 5000, 1000, 1]
             }
         }
@@ -54,7 +54,7 @@ maps.forEach(map_ => {
 
         Object.keys(year_data).forEach(key_ => {
             total_tobacco_obj[key_] = 0
-            let tile_ = L.geoJson(eval(year_data[key_]["data"]), {
+            let tile_ = L.geoJson(year_data[key_]["data"], {
                 style: styletobacco
             });
 
@@ -112,21 +112,21 @@ maps.forEach(map_ => {
         // EPA map
         let year_data = {
             "2020": {
-                data: "parish_data_2020_2019", colorfn: getParishColor20202019,
+                data: parish_data_2020_2019, colorfn: getParishColor20202019,
                 legendramp: [2500000, 150000, 50000, 1000, 1]
             },
             "2019": {
-                data: "parish_data_2019_2018", colorfn: getParishColor20192018,
+                data: parish_data_2019_2018, colorfn: getParishColor20192018,
                 legendramp: [10000, 5000, 3000, 1000, 1]
             },
             "2018": {
-                data: "parish_data_2018_2017", colorfn: getParishColor20202019,
+                data: parish_data_2018_2017, colorfn: getParishColor20202019,
                 legendramp: [2500000, 150000, 50000, 1000, 1]
             }
         }
         let baseMaps = {}
         Object.keys(year_data).forEach(key_ => {
-            let parishes_data = L.geoJson(eval(year_data[key_]["data"]), {
+            let parishes_data = L.geoJson(year_data[key_]["data"], {
                 style: style_fn
             });
 
