@@ -117,7 +117,7 @@ maps.forEach(map_ => {
                     )
                 })
                 parish.bindPopup(
-                    `<strong>Parish:</strong>${parish_ + popup_info.join("")}`, {
+                    `<strong>EPA:</strong>${parish_ + popup_info.join("")}`, {
                     autoPan: false
                 }
                 );

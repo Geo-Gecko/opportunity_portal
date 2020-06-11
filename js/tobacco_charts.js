@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             type: 'bar'
         },
         title: {
-            text: "Chart Of Tobacco Growing Areas Per Parish",
+            text: "Chart Of Tobacco Growing Areas Per EPA",
             style: {
                 "color": "#333333", "fontSize": "1.5rem",
                 "fontFamily": '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",\
