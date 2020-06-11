@@ -7,8 +7,8 @@ let categories_ = [
     "Tobacco", "Soybean", "Maize" /*"Bareland"*/
     // "Forest", "Other vegetation",
 ]
-let maps = ["map0", "map1", "map2", "map3"]
-let map0_, map1_, map2_, map3_;
+let maps = ["map0", "map1", "map2"]
+let map0_, map1_, map2_;
 
 maps.forEach(map_ => {
     let mapLegend;
@@ -35,6 +35,7 @@ maps.forEach(map_ => {
         }, 1000)
 
     } else if (map_ === "map1") {
+        // grid map
         let year_data = {
             "2020": {
                 data: "parish_grid_data_2020_2019", colorfn: getColor20202019,
@@ -49,14 +50,19 @@ maps.forEach(map_ => {
                 legendramp: [150000, 10000, 5000, 1000, 1]
             }
         }
-        let baseMaps = {}
+        let baseMaps = {}, total_tobacco_obj = {}
 
         Object.keys(year_data).forEach(key_ => {
+            total_tobacco_obj[key_] = 0
             let tile_ = L.geoJson(eval(year_data[key_]["data"]), {
                 style: styletobacco
             });
 
             function styletobacco(feature) {
+                if (feature.properties.Tobacco){
+                    total_tobacco_obj[key_] += feature.properties.Tobacco
+                }
+
                 return {
                     fillColor: year_data[key_]["colorfn"](feature.properties.Tobacco),
                     weight: 1,
@@ -76,7 +82,14 @@ maps.forEach(map_ => {
             [150000, 10000, 5000, 1000, 1],
             getColor20202019, name, mapLegend
         )
+
+        let totalTobacco = totalGridTobacco(
+            "2020", total_tobacco_obj["2020"]
+        )
+        totalTobacco.addTo(name)
+
         name.on('baselayerchange', function (eventLayer) {
+            // change legend
             if (mapLegend && mapLegend._map) {
                 name.removeControl(mapLegend);
             }
@@ -85,9 +98,18 @@ maps.forEach(map_ => {
                 year_data[eventLayer.name]["colorfn"],
                 name, mapLegend
             )
+
+            // change total tobacco grown
+            if (totalTobacco._map) {
+                name.removeControl(totalTobacco);
+            }
+            totalTobacco = totalGridTobacco(
+                eventLayer.name, total_tobacco_obj[eventLayer.name]
+            ).addTo(name)
         })
 
     } else if (map_ === "map2") {
+        // EPA map
         let year_data = {
             "2020": {
                 data: "parish_data_2020_2019", colorfn: getParishColor20202019,
