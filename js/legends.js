@@ -22,11 +22,11 @@ function addLegend(grades, ramp, map, mapLegend) {
 
     var div = L.DomUtil.create('div', 'info legend');
 
-    div.innerHTML += '<p><b>' + "Tobacco Grown" + '</b></p>';
+    div.innerHTML += "<p><b>Tobacco Grown</b></p>";
     for (var i = 0; i < grades.length; i++) {
       div.innerHTML +=
         '<i style="background:' + ramp(grades[i]) + '"></i> ' +
-        thousep2(grades[i]) + (grades[i + 1] ? '&ndash;' + thousep2(grades[i + 1]) + '<br>' : '+');
+        thousep2(grades[i]) + (grades[i + 1] ? '&ndash;' + thousep2(grades[i + 1]) + ' sqm' + '<br>' : '+ sqm');
     }
 
     return div;
