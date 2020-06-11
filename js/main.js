@@ -7,8 +7,8 @@ let categories_ = [
     "Tobacco", "Soybean", "Maize" /*"Bareland"*/
     // "Forest", "Other vegetation",
 ]
-let maps = ["map0", "map1", "map2"]
-let map0_, map1_, map2_;
+let maps = ["map0", "map1", "map2", "map3"]
+let map0_, map1_, map2_, map3_;
 
 maps.forEach(map_ => {
     let mapLegend;
@@ -36,15 +36,15 @@ maps.forEach(map_ => {
 
     } else if (map_ === "map1") {
         let year_data = {
-            "2020-2019": {
+            "2020": {
                 data: "parish_grid_data_2020_2019", colorfn: getColor20202019,
                 legendramp: [150000, 10000, 5000, 1000, 1]
             },
-            "2019-2018": {
+            "2019": {
                 data: "parish_grid_data_2019_2018", colorfn: getColor20192018,
                 legendramp: [1000, 700, 300, 100, 1]
             },
-            "2018-2017": {
+            "2018": {
                 data: "parish_grid_data_2018_2017", colorfn: getColor20202019,
                 legendramp: [150000, 10000, 5000, 1000, 1]
             }
@@ -68,8 +68,10 @@ maps.forEach(map_ => {
             }
             baseMaps[key_] = tile_
         })
-        baseMaps["2020-2019"].addTo(name)
-        L.control.layers(baseMaps, {}, { collapsed: false }).addTo(name);
+        baseMaps["2020"].addTo(name)
+        L.control.layers(
+            baseMaps, {}, { collapsed: false, sortLayers: true }
+        ).addTo(name);
         mapLegend = addLegend(
             [150000, 10000, 5000, 1000, 1],
             getColor20202019, name, mapLegend
@@ -87,15 +89,15 @@ maps.forEach(map_ => {
 
     } else if (map_ === "map2") {
         let year_data = {
-            "2020-2019": {
+            "2020": {
                 data: "parish_data_2020_2019", colorfn: getParishColor20202019,
                 legendramp: [2500000, 150000, 50000, 1000, 1]
             },
-            "2019-2018": {
+            "2019": {
                 data: "parish_data_2019_2018", colorfn: getParishColor20192018,
                 legendramp: [10000, 5000, 3000, 1000, 1]
             },
-            "2018-2017": {
+            "2018": {
                 data: "parish_data_2018_2017", colorfn: getParishColor20202019,
                 legendramp: [2500000, 150000, 50000, 1000, 1]
             }
@@ -141,8 +143,10 @@ maps.forEach(map_ => {
             }
             baseMaps[key_] = parishes_data
         })
-        baseMaps["2020-2019"].addTo(name)
-        L.control.layers(baseMaps, {}, { collapsed: false }).addTo(name);
+        baseMaps["2020"].addTo(name)
+        L.control.layers(
+            baseMaps, {}, { collapsed: false, sortLayers: true }
+        ).addTo(name);
         mapLegend = addLegend(
             [250000, 150000, 50000, 1000, 1],
             getParishColor20202019, name, mapLegend
