@@ -42,8 +42,8 @@ maps.forEach(map_ => {
                 legendramp: [150000, 10000, 5000, 1000, 1]
             },
             "2019": {
-                data: parish_grid_data_2019_2018, colorfn: getColor20192018,
-                legendramp: [1000, 700, 300, 100, 1]
+                data: parish_grid_data_2019_2018, colorfn: getColor20202019,
+                legendramp: [150000, 10000, 5000, 1000, 1]
             },
             "2018": {
                 data: parish_grid_data_2018_2017, colorfn: getColor20202019,
@@ -116,8 +116,8 @@ maps.forEach(map_ => {
                 legendramp: [2500000, 150000, 50000, 1000, 1]
             },
             "2019": {
-                data: parish_data_2019_2018, colorfn: getParishColor20192018,
-                legendramp: [10000, 5000, 3000, 1000, 1]
+                data: parish_data_2019_2018, colorfn: getParishColor20202019,
+                legendramp: [2500000, 150000, 50000, 1000, 1]
             },
             "2018": {
                 data: parish_data_2018_2017, colorfn: getParishColor20202019,
