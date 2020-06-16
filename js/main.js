@@ -33,6 +33,36 @@ maps.forEach(map_ => {
               duration: 1.0
             });
         }, 1000)
+    
+
+        let tobacco_field_data = {
+            "Tobacco": { 
+               data: tobacco_fields
+            },
+            "Soybean": {
+                data: soybeans_feilds
+            },
+            "Maize": {
+                data: maize_feilds
+            }
+        }
+
+        let baseOne = {}, tobaccoField_obj = {}
+
+        Object.keys(tobacco_field_data).forEach(name_ => {
+            tobaccoField_obj[name_] = 0
+            let tile = L.geoJson(tobacco_field_data[name_]["data"], {
+            });
+         
+            baseOne[name_] = tile
+        });
+        baseOne["Tobacco"].addTo(name)
+        L.control.layers(
+            baseOne, {}, { collapsed: false, sortLayers: true }
+        ).addTo(name);
+
+       
+
 
     } else if (map_ === "map1") {
         // grid map
@@ -72,7 +102,7 @@ maps.forEach(map_ => {
                     fillOpacity: 1
                 };
             }
-            baseMaps[key_] = tile_
+            baseMaps[key_] = tile_     
         })
         baseMaps["2020"].addTo(name)
         L.control.layers(
