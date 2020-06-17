@@ -24,6 +24,7 @@ maps.forEach(map_ => {
     }).addTo(name);
 
     if (map_ === "map0") {
+        //crop field map
         L.geoJson(tobacco_fields, {
             style: "#016c59"
         }).addTo(name);
@@ -35,7 +36,7 @@ maps.forEach(map_ => {
         }, 1000)
     
 
-        let tobacco_field_data = {
+        let farm_field_data  = {
             "Tobacco": { 
                data: tobacco_fields
             },
@@ -47,22 +48,17 @@ maps.forEach(map_ => {
             }
         }
 
-        let baseOne = {}, tobaccoField_obj = {}
+        let baseOne = {}
 
-        Object.keys(tobacco_field_data).forEach(name_ => {
-            tobaccoField_obj[name_] = 0
-            let tile = L.geoJson(tobacco_field_data[name_]["data"], {
+        Object.keys(farm_field_data).forEach(name_ => {
+            let fieldData = L.geoJson(farm_field_data[name_]["data"], {
             });
-         
-            baseOne[name_] = tile
+            baseOne[name_] = fieldData
         });
         baseOne["Tobacco"].addTo(name)
         L.control.layers(
             baseOne, {}, { collapsed: false, sortLayers: true }
         ).addTo(name);
-
-       
-
 
     } else if (map_ === "map1") {
         // grid map
