@@ -98,7 +98,7 @@ maps.forEach(map_ => {
                     fillOpacity: 1
                 };
             }
-            baseMaps[key_] = tile_     
+            baseMaps[key_] = tile_
         })
         baseMaps["2020"].addTo(name)
         L.control.layers(
