@@ -24,6 +24,7 @@ maps.forEach(map_ => {
     }).addTo(name);
 
     if (map_ === "map0") {
+        //crop field map
         L.geoJson(tobacco_fields, {
             style: "#016c59"
         }).addTo(name);
@@ -33,6 +34,31 @@ maps.forEach(map_ => {
               duration: 1.0
             });
         }, 1000)
+    
+
+        let farm_field_data  = {
+            "Tobacco": { 
+               data: tobacco_fields
+            },
+            "Soybean": {
+                data: soybeans_feilds
+            },
+            "Maize": {
+                data: maize_feilds
+            }
+        }
+
+        let baseOne = {}
+
+        Object.keys(farm_field_data).forEach(name_ => {
+            let fieldData = L.geoJson(farm_field_data[name_]["data"], {
+            });
+            baseOne[name_] = fieldData
+        });
+        baseOne["Tobacco"].addTo(name)
+        L.control.layers(
+            baseOne, {}, { collapsed: false, sortLayers: true }
+        ).addTo(name);
 
     } else if (map_ === "map1") {
         // grid map
