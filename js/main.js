@@ -147,65 +147,8 @@ maps.forEach(map_ => {
                 legendramp: [250000, 150000, 50000, 1000, 1]
             }
         }
-        let baseMaps = {}
-        Object.keys(year_data).forEach(key_ => {
-            let parishes_data = L.geoJson(year_data[key_]["data"], {
-                style: style_fn
-            });
+        generate_epa_layer(year_data, categories_, name)
 
-            parishes_data.eachLayer(function (parish) {
-                let parish_ = parish.feature.properties.Name;
-                let popup_info = []
-                categories_.forEach(category_ => {
-                    let number_ = parish.feature.properties[category_]
-                    number_ = number_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    popup_info.push(
-                        `<br><strong>${category_}:</strong>${number_} sqm`
-                    )
-                })
-                parish.bindPopup(
-                    `<strong>EPA:</strong>${parish_ + popup_info.join("")}`, {
-                    autoPan: false
-                }
-                );
-                parish.on('mouseover', function (e) {
-                    this.openPopup();
-                });
-                parish.on('mouseout', function (e) {
-                    this.closePopup();
-                });
-            });
-
-            function style_fn(feature) {
-                return {
-                    fillColor: year_data[key_]["colorfn"](feature.properties.Tobacco),
-                    weight: 1,
-                    opacity: 0.5,
-                    color: 'black',
-                    dashArray: '0',
-                    fillOpacity: 1
-                };
-            }
-            baseMaps[key_] = parishes_data
-        })
-        baseMaps["2020"].addTo(name)
-        L.control.layers(
-            baseMaps, {}, { collapsed: false, sortLayers: true }
-        ).addTo(name);
-        mapLegend = addLegend(
-            [250000, 150000, 50000, 1000, 1],
-            getParishColor20202019, name, mapLegend
-        )
-        name.on('baselayerchange', function (eventLayer) {
-            if (mapLegend && mapLegend._map) {
-                name.removeControl(mapLegend);
-            }
-            mapLegend = addLegend(
-                year_data[eventLayer.name]["legendramp"],
-                year_data[eventLayer.name]["colorfn"],
-                name, mapLegend
-            )
-        })
     } else if (map_ === "map3") {
         // EPA difference map
         let diff_parish_data_2020_2019 = {"type":"FeatureCollection", "features": []}
@@ -242,62 +185,7 @@ maps.forEach(map_ => {
                 legendramp: [350000, 250000, 150000, 50000, 1]
             },
         }
-        let baseMaps = {}
-        Object.keys(year_data).forEach(key_ => {
-            let parishes_data = L.geoJson(year_data[key_]["data"], {
-                style: style_fn
-            });
-
-            parishes_data.eachLayer(function (parish) {
-                let parish_ = parish.feature.properties.Name;
-
-                let number_ = parish.feature.properties.Tobacco
-                number_ = number_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                let popup_info =
-                    `<br><strong>Tobacco: </strong>${number_} difference in sqm`
-                parish.bindPopup(
-                    `<strong>EPA:</strong>${parish_ + popup_info}`, {
-                    autoPan: false
-                }
-                );
-                parish.on('mouseover', function (e) {
-                    this.openPopup();
-                });
-                parish.on('mouseout', function (e) {
-                    this.closePopup();
-                });
-            });
-
-            function style_fn(feature) {
-                return {
-                    fillColor: year_data[key_]["colorfn"](feature.properties.Tobacco),
-                    weight: 1,
-                    opacity: 0.5,
-                    color: 'black',
-                    dashArray: '0',
-                    fillOpacity: 1
-                };
-            }
-            baseMaps[key_] = parishes_data
-        })
-        baseMaps["2020-2019"].addTo(name)
-        L.control.layers(
-            baseMaps, {}, { collapsed: false, sortLayers: true }
-        ).addTo(name);
-        mapLegend = addLegend(
-            [350000, 250000, 150000, 50000, 1],
-            getdiffParishColor20192018, name, mapLegend
-        )
-        name.on('baselayerchange', function (eventLayer) {
-            if (mapLegend && mapLegend._map) {
-                name.removeControl(mapLegend);
-            }
-            mapLegend = addLegend(
-                year_data[eventLayer.name]["legendramp"],
-                year_data[eventLayer.name]["colorfn"],
-                name, mapLegend
-            )
-        })
+        generate_epa_layer(year_data, ["Tobacco"], name)
     }
 
 })
