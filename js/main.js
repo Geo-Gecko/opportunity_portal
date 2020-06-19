@@ -28,21 +28,40 @@ maps.forEach(map_ => {
 
         let farm_field_data  = {
             "Tobacco": { 
-               data: tobacco_fields
+               data: tobacco_fields,
+               color: 'yellow'
             },
             "Soybean": {
-                data: soybeans_feilds
+                data: soybeans_feilds, 
+                color: 'yellow'
             },
             "Maize": {
-                data: maize_feilds
-            }
+                data: maize_feilds, 
+                color: 'yellow'
+            },
+            "EPAs": {
+                data: EPAs_data,
+                color: 'red',
+                fillColor: 'ffffff00'
+            },
+            "Districts": {
+                data: districts_data,
+                color: 'red',
+                fillColor: 'ffffff00'
+            },
         }
 
         let baseOne = {}
 
         Object.keys(farm_field_data).forEach(name_ => {
-            let fieldData = L.geoJson(farm_field_data[name_]["data"], {
-            });
+            let fieldData = L.geoJson(farm_field_data[name_]["data"],{ 
+                style: {
+                    weight: 1.5,
+                    opacity: 1,
+                    fillColor: farm_field_data[name_]["fillColor"],
+                    color: farm_field_data[name_]["color"]
+                } 
+            });          
             baseOne[name_] = fieldData
         });
         baseOne["Tobacco"].addTo(name)
