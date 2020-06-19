@@ -26,7 +26,7 @@ function addLegend(grades, ramp, map, mapLegend) {
     for (let i = 0; i < grades.length; i++) {
       div.innerHTML +=
         '<i style="background:' + ramp(grades[i]) + '"></i> ' +
-        thousep2(grades[i]) + (grades[i + 1] ? '&ndash;' + thousep2(grades[i + 1]) + ' sqm' + '<br>' : '+ sqm');
+        thousep2(grades[i]) + (grades[i + 1] ? ' &ndash; ' + thousep2(grades[i + 1]) + ' sqm' + '<br>' : '+ sqm');
     }
 
     return div;

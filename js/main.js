@@ -154,35 +154,34 @@ maps.forEach(map_ => {
         let diff_parish_data_2020_2019 = {"type":"FeatureCollection", "features": []}
         let diff_parish_data_2019_2018 = {"type":"FeatureCollection", "features": []}
         parish_data_2020_2019.features.forEach((feature, i) => {
+            // spread operator is to allow for a deep copy
             let new_feature = {
-                "type": feature.type, "geometry": feature.geometry, "properties": feature.properties
+                "type": feature.type, "geometry": feature.geometry, "properties": {...feature.properties}
             };
-            let diffed_value = Math.abs(
+            let diffed_value =
                 feature.properties.Tobacco -
-                    parish_data_2019_2018.features[i].properties.Tobacco
-            )
+                    parish_data_2019_2018.features[i].properties.Tobacco;
             new_feature.properties.Tobacco = diffed_value
             diff_parish_data_2020_2019.features.push(new_feature)
         })
         parish_data_2019_2018.features.forEach((feature, i) => {
             let new_feature = {
-                "type": feature.type, "geometry": feature.geometry, "properties": feature.properties
+                "type": feature.type, "geometry": feature.geometry, "properties": {...feature.properties}
             };
-            let diffed_value = Math.abs(
+            let diffed_value = 
                 feature.properties.Tobacco -
                     parish_data_2018_2017.features[i].properties.Tobacco
-            )
             new_feature.properties.Tobacco = diffed_value
             diff_parish_data_2019_2018.features.push(new_feature)
         })
         let year_data = {
             "2020-2019": {
                 data: diff_parish_data_2020_2019, colorfn: getdiffParishColor20192018,
-                legendramp: [350000, 250000, 150000, 50000, 1]
+                legendramp: [-250000, -150000, 150000, 250000]
             },
             "2019-2018": {
                 data: diff_parish_data_2019_2018, colorfn: getdiffParishColor20192018,
-                legendramp: [350000, 250000, 150000, 50000, 1]
+                legendramp: [-250000, -150000, 150000, 250000]
             },
         }
         generate_epa_layer(year_data, ["Tobacco"], name)

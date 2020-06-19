@@ -13,8 +13,8 @@ function generate_epa_layer(year_data, categories_, name) {
           let number_ = parish.feature.properties[category_]
           number_ = number_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           popup_info.push(
-              `<br><strong>${category_}:</strong>${
-                categories_.length === 1 ? number_ + "difference in" : number_ + ""
+              `<br><strong>${category_}: </strong>${
+                categories_.length === 1 ? number_ + " difference in" : number_ + ""
               } sqm`
           )
       })
