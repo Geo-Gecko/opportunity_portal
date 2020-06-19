@@ -23,8 +23,10 @@ maps.forEach(map_ => {
         filter: ['grayscale:100%'],
     }).addTo(name);
 
+
     if (map_ === "map0") {
         //crop field map
+        let map = maps;
 
         let farm_field_data  = {
             "Tobacco": { 
@@ -35,7 +37,14 @@ maps.forEach(map_ => {
             },
             "Maize": {
                 data: maize_feilds
-            }
+            },
+            "EPRs": {
+                data: EPAs_data
+            },
+            "Districts": {
+                data: districts_data
+            },
+
         }
 
         let baseOne = {}
@@ -47,7 +56,7 @@ maps.forEach(map_ => {
         });
         baseOne["Tobacco"].addTo(name)
         setTimeout(function () {
-            name.flyTo([-14.27, 33.77], 11, {
+            name.flyTo([2.8, 20.24], 6, {
               animate: true,
               duration: 1.0
             });
