@@ -25,16 +25,6 @@ maps.forEach(map_ => {
 
     if (map_ === "map0") {
         //crop field map
-        L.geoJson(tobacco_fields, {
-            style: "#016c59"
-        }).addTo(name);
-        setTimeout(function () {
-            name.flyTo([-14.27, 33.77], 11, {
-              animate: true,
-              duration: 1.0
-            });
-        }, 1000)
-    
 
         let farm_field_data  = {
             "Tobacco": { 
@@ -56,6 +46,13 @@ maps.forEach(map_ => {
             baseOne[name_] = fieldData
         });
         baseOne["Tobacco"].addTo(name)
+        setTimeout(function () {
+            name.flyTo([-14.27, 33.77], 11, {
+              animate: true,
+              duration: 1.0
+            });
+        }, 1000)
+    
         L.control.layers(
             baseOne, {}, { collapsed: false, sortLayers: true }
         ).addTo(name);
