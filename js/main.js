@@ -12,7 +12,6 @@ let map0_, map1_, map2_;
 
 maps.forEach(map_ => {
     let mapLegend;
-   let style;
     let name = window[`${map_}_`]
     name = L.map(map_, {
         maxBounds: bounds,
