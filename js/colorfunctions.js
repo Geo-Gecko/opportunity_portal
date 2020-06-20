@@ -60,3 +60,15 @@ return d > 10000 ? '#016c59' :
   d > null ? '#808080' :
   '#808080';
 }
+
+
+function style_epas_districts(feature) {
+  return {
+      fillColor: 'blue',
+      weight: 1,
+      opacity: 1.5,
+      color: 'red',
+      fillOpacity: 1.7
+  };
+}
+
