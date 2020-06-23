@@ -12,7 +12,6 @@ let map0_, map1_, map2_;
 
 maps.forEach(map_ => {
     let mapLegend;
-   let style;
     let name = window[`${map_}_`]
     name = L.map(map_, {
         maxBounds: bounds,
@@ -27,27 +26,23 @@ maps.forEach(map_ => {
 
     if (map_ === "map0") {
         //crop field map
-        let map = maps;
 
+       
         let farm_field_data  = {
             "Tobacco": { 
                data: tobacco_fields
             },
             "Soybean": {
-                data: soybeans_feilds,
-               
+                data: soybeans_feilds, 
             },
             "Maize": {
-                data: maize_feilds,
-               
+                data: maize_feilds, 
             },
             "EPAs": {
                 data: EPAs_data,
-               
             },
             "Districts": {
                 data: districts_data,
-               
             },
 
         }
@@ -55,10 +50,19 @@ maps.forEach(map_ => {
         let baseOne = {}
 
         Object.keys(farm_field_data).forEach(name_ => {
-            let fieldData = L.geoJson(farm_field_data[name_]["data"],{  
-                style: style_epas_districts  
+            let fieldData = L.geoJson(farm_field_data[name_]["data"],{ 
+                style: style_epas_districts
+               
             });
-        
+
+            function style_epas_districts(feature) {
+                return {
+                    weight: 1,
+                    opacity: 1.5,
+                    color: 'red',
+                };
+              }
+                       
             baseOne[name_] = fieldData
         });
 
