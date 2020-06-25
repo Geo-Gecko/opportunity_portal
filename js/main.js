@@ -43,7 +43,7 @@ maps.forEach(map_ => {
             "EPAs": {
                 data: EPAs_data,
                 color: 'red',
-                fillColor: 'ffffff00'
+                fillColor: 'ffffff00',
             },
             "Districts": {
                 data: districts_data,
@@ -61,9 +61,21 @@ maps.forEach(map_ => {
                     opacity: 1,
                     fillColor: farm_field_data[name_]["fillColor"],
                     color: farm_field_data[name_]["color"]
-                }
-               
-            });          
+                }  
+            });
+                fieldData.eachLayer(function (parish){
+                let parish_ = parish.feature.properties.Name;
+                parish.bindPopup(
+                    `<strong>EPA:</strong>${parish_}`, {
+                        autoPan: false
+                    });
+                    parish.on('mouseover', function (e) {
+                        this.openPopup();
+                    });
+                    parish.on('mouseout', function (e) {
+                        this.closePopup();
+                    });
+            })      
             baseOne[name_] = fieldData
         });
 
