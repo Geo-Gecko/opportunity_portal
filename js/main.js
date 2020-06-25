@@ -26,49 +26,50 @@ maps.forEach(map_ => {
 
     if (map_ === "map0") {
         //crop field map
-
        
         let farm_field_data  = {
             "Tobacco": { 
-               data: tobacco_fields
+               data: tobacco_fields,
+               color: 'yellow'
             },
             "Soybean": {
                 data: soybeans_feilds, 
+                color: 'yellow'
             },
             "Maize": {
                 data: maize_feilds, 
+                color: 'yellow'
             },
             "EPAs": {
                 data: EPAs_data,
+                color: 'red',
+                fillColor: 'ffffff00'
             },
             "Districts": {
                 data: districts_data,
+                color: 'red',
+                fillColor: 'ffffff00'
             },
-
         }
 
         let baseOne = {}
 
         Object.keys(farm_field_data).forEach(name_ => {
             let fieldData = L.geoJson(farm_field_data[name_]["data"],{ 
-                style: style_epas_districts
+                style: {
+                    weight: 1.5,
+                    opacity: 1,
+                    fillColor: farm_field_data[name_]["fillColor"],
+                    color: farm_field_data[name_]["color"]
+                }
                
-            });
-
-            function style_epas_districts(feature) {
-                return {
-                    weight: 1,
-                    opacity: 1.5,
-                    color: 'red',
-                };
-              }
-                       
+            });          
             baseOne[name_] = fieldData
         });
 
         baseOne["Tobacco"].addTo(name)
         setTimeout(function () {
-            name.flyTo([2.8, 20.24], 6, {
+            name.flyTo([-14.27, 33.77], 11, {
               animate: true,
               duration: 1.0
             });
