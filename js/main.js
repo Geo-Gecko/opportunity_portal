@@ -26,18 +26,18 @@ maps.forEach(map_ => {
 
     if (map_ === "map0") {
         //crop field map
-       
-        let farm_field_data  = {
-            "Tobacco": { 
-               data: tobacco_fields,
-               color: 'yellow'
+
+        let farm_field_data = {
+            "Tobacco": {
+                data: tobacco_fields,
+                color: 'yellow'
             },
             "Soybean": {
-                data: soybeans_feilds, 
+                data: soybeans_feilds,
                 color: 'yellow'
             },
             "Maize": {
-                data: maize_feilds, 
+                data: maize_feilds,
                 color: 'yellow'
             },
             "EPAs": {
@@ -55,18 +55,24 @@ maps.forEach(map_ => {
         let baseOne = {}
 
         Object.keys(farm_field_data).forEach(name_ => {
-            let fieldData = L.geoJson(farm_field_data[name_]["data"],{ 
+            let fieldData = L.geoJson(farm_field_data[name_]["data"], {
+                onEachFeature: function (feature, layer) {
+
+
+                },
                 style: {
                     weight: 1.5,
                     opacity: 1,
                     fillColor: farm_field_data[name_]["fillColor"],
                     color: farm_field_data[name_]["color"]
-                }  
+                }
             });
-                fieldData.eachLayer(function (parish){
-                let parish_ = parish.feature.properties.Name;
-                parish.bindPopup(
-                    `<strong>EPA:</strong>${parish_}`, {
+            fieldData.eachLayer(function (parish) {
+
+                if (parish.feature.properties.EPA) {
+                    let parish_ = parish.feature.properties.Name;
+                    parish.bindPopup(
+                        `<strong>EPA:</strong>${parish_}`, {
                         autoPan: false
                     });
                     parish.on('mouseover', function (e) {
@@ -75,18 +81,19 @@ maps.forEach(map_ => {
                     parish.on('mouseout', function (e) {
                         this.closePopup();
                     });
-            })      
+                }
+            })
             baseOne[name_] = fieldData
         });
 
         baseOne["Tobacco"].addTo(name)
         setTimeout(function () {
             name.flyTo([-14.27, 33.77], 11, {
-              animate: true,
-              duration: 1.0
+                animate: true,
+                duration: 1.0
             });
         }, 1000)
-    
+
         L.control.layers(
             baseOne, {}, { collapsed: false, sortLayers: true }
         ).addTo(name);
@@ -116,7 +123,7 @@ maps.forEach(map_ => {
             });
 
             function styletobacco(feature) {
-                if (feature.properties.Tobacco){
+                if (feature.properties.Tobacco) {
                     total_tobacco_obj[key_] += feature.properties.Tobacco
                 }
 
