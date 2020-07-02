@@ -61,7 +61,23 @@ maps.forEach(map_ => {
                     fillColor: farm_field_data[name_]["fillColor"],
                     color: farm_field_data[name_]["color"]
                 } 
-            });          
+            }); 
+            fieldData.eachLayer(function (parish) {
+ 
+                if (parish.feature.properties.EPA) {
+                    let parish_ = parish.feature.properties.Name;
+                    parish.bindPopup(
+                        `<strong>EPA:</strong>${parish_}`, {
+                        autoPan: false
+                    });
+                    parish.on('mouseover', function (e) {
+                        this.openPopup();
+                    });
+                    parish.on('mouseout', function (e) {
+                        this.closePopup();
+                    });
+                }
+            })         
             baseOne[name_] = fieldData
         });
         baseOne["Tobacco"].addTo(name)
